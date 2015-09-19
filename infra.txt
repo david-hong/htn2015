@@ -3,7 +3,6 @@
 
     preventing|mitigate CTS
     if found that user wrists are shit for long time tell them to fix it - return notifyXXX
-    if has notifyXXX, http.get(notifyXXX) - shows notification
 
     notifyXXX - whats wrong, dangers of it, how to fix it, danger level
     ie. super warning?
@@ -15,7 +14,16 @@
 
 front end
   login
-  survey
   notification
   settings
   data visualization
+
+  
+  do login, try multiple, else 1
+  settings
+  
+  backend
+  calib
+  
+  pretty
+  data

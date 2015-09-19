@@ -9,19 +9,9 @@ def hello():
 def showSignUp():
 	return render_template('signup.html')
 
-@app.route('/signUp', methods=['POST'])
-def signUp():
-	_name = request.form['inputName']
-	_email = request.form['inputEmail']
-	_password = request.form['inputPassword']
-
-	new_user = _name + ' ' + _email + ' ' + _password
-
-	print 'signing up'
-
-	if _name and _email and _password:
-		result = firebase.post('/users', new_user, {'print': 'pretty'}, {'X_FANCY_HEADER' : 'VERY FANCY'})
-		print 'hi'#return json.dumps({'html':'<span>All fields good !!</span>'})
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
 if __name__ == "__main__":
     app.run()
