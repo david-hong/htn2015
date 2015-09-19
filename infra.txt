@@ -1,0 +1,21 @@
+- users, write to a users profile. If they have carpel tunnel, if so on which hand
+- /user/data/[prevent|mitigate] post? check every xmins, rest do on runtime
+
+    preventing|mitigate CTS
+    if found that user wrists are shit for long time tell them to fix it - return notifyXXX
+    if has notifyXXX, http.get(notifyXXX) - shows notification
+
+    notifyXXX - whats wrong, dangers of it, how to fix it, danger level
+    ie. super warning?
+
+    at the end of certain time, or when requested
+    tests
+    post them.
+
+
+front end
+  login
+  survey
+  notification
+  settings
+  data visualization
