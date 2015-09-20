@@ -28,6 +28,10 @@ def login():
 def settings():
     return render_template('settings.html')
 
+@app.route('/data')
+def data():
+	return render_template('data.html')    
+
 @app.route('/notification', methods=['POST'])
 def checkStatus():
 
