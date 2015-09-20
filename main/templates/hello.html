@@ -2,9 +2,11 @@
 <head>
 <script src="http://js.leapmotion.com/leap-0.6.3.min.js"></script>
 <script src="https://cdn.firebase.com/js/client/2.2.9/firebase.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="{{ url_for('static', filename='js/leap.js') }}"></script>
 <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='signup.css') }}" rel="stylesheet">
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -21,11 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 </head>
 <title>Hello from Flask</title>
-{% if name %}
-  <h1>Hello {{ name }}!</h1>
-{% else %}
-  <h1>Hello World!</h1>
-{% endif %}
 <button id="pause" onclick="togglePause()">Pause</button>
   <h3>Hand data:</h3>
   <div id="handData"></div>
@@ -34,12 +31,14 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="container">
         <div class="header">
             <nav>
-                <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="#">Home</a>
-                    </li>
-                    <li role="presentation"><a href="showSignUp">Sign Up</a>
-                    </li>
-                </ul>
+              <ul class="nav nav-pills pull-right">
+                <li id="home"><a href="main">Home</a></li>
+                <li id="settings"><a href="settings">Settings</a></li>
+                <li id="data"><a href="data">Historical Data</a></li>
+                <li id="login"><a href="login">Login</a></li>
+                <li id="signup"><a href="showSignUp">Sign Up</a></li>
+                <li role="presentation" id="logout"><a href="#" onclick="logout()">Log out</a></li>
+              </ul>
             </nav>
             <h3 class="text-muted">Python Flask App</h3>
         </div>

@@ -17,10 +17,6 @@ front end
   notification
   settings
   data visualization
-
-  
-  do login, try multiple, else 1
-  settings
   
   backend
   calib

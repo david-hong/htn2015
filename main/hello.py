@@ -10,7 +10,11 @@ app.debug = True
 
 @app.route("/")
 def hello():
-    return render_template('hello.html', name="name")
+    return render_template('hello.html')
+
+@app.route("/main")
+def main():
+    return render_template('hello.html')
 
 @app.route('/showSignUp')
 def showSignUp():
@@ -19,6 +23,10 @@ def showSignUp():
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
 
 @app.route('/notification', methods=['POST'])
 def checkStatus():

@@ -6,7 +6,7 @@
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.firebase.com/js/client/2.2.9/firebase.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='signup.css') }}" rel="stylesheet">
 
@@ -32,13 +32,29 @@
       <div class="jumbotron">
         <h1>Bucket List App</h1>
         <form class="form-signin">
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
+          Have Carpal Tunnel Syndrome?
+          <input type="checkbox" id="haveCTS"> Yes
 
-        <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button" onclick="login()">Login</button>
-      </form>
+          <br>
+
+          <label class="chand" for="haveCTS" class="sr-only">Which hand do you have CTS?</label>
+          <select id="CTShand" class="chand">
+            <option value="L">Left</option>
+            <option value="R">Right</option>
+            <option value="B">Both</option>
+          </select>
+
+          <br><br>
+
+          Not sure if you have CTS?
+          <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button" onclick="testCTS()">Take a test</button>
+
+          <br>
+          How often do you want to receive notifications to fix your wrist posture? (Recommended every 5 mins)
+          <input type="number" name="notifDownTime" id="notifDownTime" class="form-control" required>
+
+          <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button" onclick="updateSettings()">Update</button>
+        </form>
       </div>
 
       <footer class="footer">

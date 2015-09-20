@@ -4,9 +4,67 @@ var previousFrame = null
 var paused = false
 var open = false
 var lastNotify = new Date()
+var currDate
+var user
 
 // Setup Leap loop with frame callback function
 var controllerOptions = {enableGestures: true};
+
+$('document').ready(function(){
+  user = JSON.parse(sessionStorage.getItem('user'))
+  console.log(user)
+  if(user){
+    $("#login").hide()
+    $("#signup").hide()
+  }
+  else{
+    $("#logout").hide()
+    $("#settings").hide()
+    $("#data").hide()
+  }
+})
+
+function logout(){
+  if(user){
+    user = null
+    sessionStorage.removeItem("user")
+    window.location.replace("http://localhost:5000/")
+  }
+}
+
+//need to get some hand params
+function updateLeap(hand){
+  currDate = new Date()
+  //IF SHIT IS BAAAAAAAAAAAAD, TIMEOUT
+  if(hand.type == "right" && (!open || currDate - lastNotify  >= 30000)){
+
+    usersRef.child(user.name.replace(/ /g, '_')).update({
+        handValues: "Arham like cookies"
+    })
+
+    console.log(currDate - lastNotify)
+    if(!open){
+      open = true
+    }
+    else{
+      lastNotify = currDate
+    }
+
+    var notification = new Notification('Notification title', {
+      icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
+      body: "Fix yo fucking wrists!",
+    });
+
+    notification.onclick = function () {
+      window.open("http://stackoverflow.com/a/13328397/1269037");
+    };
+  }
+  else{
+    //console.log(hand.type)
+    console.log(currDate - lastNotify)
+    console.log(open)
+  }
+}
 
 // to use HMD mode:
 // controllerOptions.optimizeHMD = true;
@@ -26,38 +84,6 @@ Leap.loop(controllerOptions, function(frame) {
       handString += "Type: " + hand.type + " hand" + "<br />";
       handString += "Confidence: " + hand.Confidence + "<br />";
       handString += "Direction: " + vectorToString(hand.direction, 2) + "<br />";
-
-      var currDate = new Date()
-      //IF SHIT IS BAAAAAAAAAAAAD, TIMEOUT
-      if(hand.type == "right" && (!open || currDate - lastNotify  >= 30000)){
-
-        usersRef.child("John_Doe").update({
-            handValues: "Arham like cookies",
-            senpai: "notice me"
-        })
-
-        console.log(currDate - lastNotify)
-        if(!open){
-          open = true
-        }
-        else{
-          lastNotify = currDate
-        }
-
-        var notification = new Notification('Notification title', {
-          icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
-          body: "Fix yo fucking wrists!",
-        });
-
-        notification.onclick = function () {
-          window.open("http://stackoverflow.com/a/13328397/1269037");
-        };
-      }
-      else{
-        //console.log(hand.type)
-        console.log(currDate - lastNotify)
-        console.log(open)
-      }
 
       // IDs of pointables associated with this hand
       if (hand.pointables.length > 0) {
@@ -110,6 +136,9 @@ Leap.loop(controllerOptions, function(frame) {
 
   // Store frame for motion functions
   previousFrame = frame;
+
+  //supply some params
+  updateLeap(hand)
 })
 
 function vectorToString(vector, digits) {
