@@ -1,12 +1,8 @@
-from flask import Flask, request, url_for, render_template, jsonify, request
+from flask import Flask, request, url_for, render_template, jsonify
 from firebase import firebase
-
-import time
-
-firebase = firebase.FirebaseApplication('https://carpal-tunnel.firebaseio.com', None)
-
 app = Flask(__name__)
-app.debug = True
+
+firebase = firebase.FirebaseApplication('https://carpal-tunnel.firebaseio.com/users/', None)
 
 @app.route("/")
 def hello():
@@ -28,21 +24,25 @@ def login():
 def settings():
     return render_template('settings.html')
 
+@app.route('/leapRecord')
+def leapRecord():
+    return render_template('leapRecord.html')
+
+@app.route('/test')
+def testCTS():
+    return render_template('test.html')
+
 @app.route('/data')
 def data():
-	return render_template('data.html')    
+	return render_template('data.html')
 
 @app.route('/notification', methods=['POST'])
 def checkStatus():
 
-	result = firebase.get("/users/" + request.form["user"], None)
+    return jsonify(result={"user": request.form['user'],
+                            "notification": request.form['notification'],
+                            "timeStamp": int(round(time.time() * 1000))})
 
-	result["notification"].append({"id": request.form['notification'], "timeStamp": int(round(time.time() * 1000)) })
-	result["handValues"] = request.form["handValues"]
-
-	firebase.put("/users", request.form["user"], result)
-	
-	return jsonify(result)
 
 if __name__ == "__main__":
     app.run()

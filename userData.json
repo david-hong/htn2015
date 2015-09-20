@@ -1,0 +1,9 @@
+{
+	"users": {
+		"John_Doe" : {
+			"hasCarpalTunnel": true,
+			"handAffected" : "left",
+			"handValues" : "empty" 
+		}
+	}
+}

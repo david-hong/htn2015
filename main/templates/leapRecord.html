@@ -1,0 +1,167 @@
+<html>
+<head>
+  <title>Leap Recorder</title>
+
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="http://leapmotion.github.io/leapjs-playback/recorder/stylesheets/lib/angular.rangeSlider.css">
+
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/javascripts/lib/jquery-2.1.0.min.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/javascripts/lib/FileSaver.js"></script>
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/javascripts/lib/spin.min.js"></script>
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/javascripts/lib/angular.js"></script>
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/javascripts/lib/angular.rangeSlider.js"></script>
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/javascripts/lib/angular-spinner.min.js"></script>
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/javascripts/lib/angulartics.min.js"></script>
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/javascripts/lib/angulartics-ga.min.js"></script>
+
+  <link href="http://leapmotion.github.io/leapjs-playback/recorder/bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+
+  <link href="http://leapmotion.github.io/leapjs-playback/recorder/bower_components/highlightjs/styles/default.css" rel="stylesheet">
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/bower_components/highlightjs/highlight.pack.js"></script>
+
+  <link rel="stylesheet" href="http://leapmotion.github.io/leapjs-playback/recorder/stylesheets/main.css">
+  <link rel="stylesheet" href="http://leapmotion.github.io/leapjs-playback/recorder/stylesheets/controls.css">
+  <link rel="stylesheet" href="http://leapmotion.github.io/leapjs-playback/recorder/stylesheets/data-collection.css">
+
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/javascripts/lib/three.min.js"></script>
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/javascripts/lib/TrackballControls.js"></script>
+
+  <script src="http://js.leapmotion.com/leap-0.6.3.min.js"></script>
+  <script src="http://js.leapmotion.com/leap-plugins-0.1.8.js"></script>
+  <script src="http://js.leapmotion.com/leap.rigged-hand-0.1.5.js"></script>
+  <script src="http://leapmotion.github.io/leapjs-playback/build/leap.playback-0.2.1.js"></script>
+
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/javascripts/recorder.js"></script>
+  <script src="{{ url_for('static', filename='js/controls.js') }}"></script>
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/javascripts/data-collection.js"></script>
+  <script src="http://leapmotion.github.io/leapjs-playback/recorder/javascripts/metadata.js"></script>
+
+</head>
+<body ng-app="Recorder">
+
+<!-- For the time being, this controller manages recordings which get used -->
+<div data-ng-controller="DataCollection" ng-show="mode != 'recording' && mode != 'off'">
+
+  <section class="row" id="changeRecording" ng-animate="'animate'" ng-show="mode == 'intro'">
+
+    <div class="col-xs-2 changeRecordingControl">
+      <button ng-click="previous($event)" class="btn btn-default btn-double">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+      </button>
+    </div>
+
+    <div class="col-xs-8">
+
+      <div class="pull-right">
+        <button class="btn btn-default" ng-click="replay($event)" ng-disabled="!canReplay()">
+          Replay
+        </button>
+        <button class="btn btn-default btn-success" ng-click="record()">
+          Make Recording
+        </button>
+      </div>
+    </div>
+
+    <div class="col-xs-2 changeRecordingControl" style="text-align: right;">
+      <button ng-click="next($event)" class="btn btn-default btn-double">
+        <i class="glyphicon glyphicon-chevron-right"></i>
+      </button>
+    </div>
+    <div class="clearfix"></div>
+  </section>
+
+  <!-- todo: leap-enable! -->
+  <section class="row" id="acceptRecording" ng-animate="'animate'" ng-show="mode == 'outro'">
+    <div class="col-xs-8 col-xs-offset-2">
+      <h2>Deliver Recording?</h2>
+      <p class="recordingDescription">
+      </p>
+      <div class="pull-right">
+        <button class="btn btn-default" ng-click="discard()">Discard</button>
+        <button class="btn btn-primary" ng-click="save()">Save & Send</button>
+      </div>
+    </div>
+  </section>
+  <hr/>
+</div>
+
+<div id="controls" data-ng-controller="Controls">
+  <div id="range"
+       pin-handle="{{pinHandle}}"
+       range-slider min="0" max="recordingLength()" model-min="leftHandlePosition" model-max="rightHandlePosition"
+       ng-show="mode == 'crop' || mode == 'playback'"></div>
+
+  <div class="btn-group btn-group-lg dropup">
+
+    <button type="button" class="btn btn-default" ng-click="record()" ng-class="{active: mode=='record'}" id="record">
+
+      <i class="glyphicon glyphicon-record" ng-class="{orange: recordPending(), red: recording()}"></i>
+
+      <span class="hotkey">R</span>ecord
+
+    </button>
+
+    <button type="button" class="btn btn-default" ng-click="crop()" ng-class="{active: mode=='crop'}" ng-disabled="canPlayBack()" id="crop">
+
+      <span style="margin-top: -2px; display: inline-block; vertical-align: top;">[ ]</span>
+
+      <span class="hotkey">C</span>rop
+
+    </button>
+
+    <button style="text-align: left" type="button" class="btn btn-default" ng-click="playback()" ng-class="{active: mode=='playback'}" ng-disabled="canPlayBack()">
+
+      <span ng-show="player().loading()" us-spinner="{radius:4, width:2, length: 4, left: '20px'}" style="width: 18px; display: inline-block;"></span>
+
+      <span ng-show="!player().loading() && !pauseOnPlaybackButtonClick()">&#9654;</span>
+
+      <span ng-show="!player().loading() && pauseOnPlaybackButtonClick()"><i class="glyphicon glyphicon-pause"></i></span>
+
+      <span class="hotkey">P</span>layback
+
+    </button>
+
+  </div>
+
+
+
+  <div class="btn-group btn-group-lg dropup" style="text-align: left;">
+    <button type="button" class="btn btn-default" ng-click="save()">Download</button>
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+      <li><a href="#" ng-click="save()"><b>Compressed</b></a></li>
+      <li><a href="#" ng-click="save('json')">As JSON</a></li>
+    </ul>
+  </div>
+
+  <div class="pull-right">
+    <a href="#" onclick="$('#helpModal').modal('toggle')">
+      <!-- todo: should change href to help and use angular router.. -->
+      <i class="glyphicon glyphicon-info-sign help-modal-control"></i>
+    </a>
+  </div>
+
+</div>
+
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+
+  (window.controller = new Leap.Controller({background: true}))
+    .use('playback', {
+      loop: false,
+      pauseHotkey: false,
+      pauseOnHand: false
+    })
+    .use('riggedHand')
+    .connect();
+
+</script>
+
+</body>
+</html>

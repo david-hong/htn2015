@@ -1,11 +1,39 @@
 // Store frame for motion functions
-var usersRef = new Firebase('https://carpal-tunnel.firebaseio.com/users/');
+var usersRef = new Firebase('https://carpal-tunnel.firebaseio.com/');
 var previousFrame = null
 var paused = false
-var open = false
+var open = true
 var lastNotify = new Date()
 var currDate
 var user
+var harmful_mouseDV = []
+var harmful_mouseCF = []
+var harmful_mouseWR = []
+var harmful_mousePM = []
+
+var harmful_bendLeftDV = []
+var harmful_bendLeftCF = []
+var harmful_bendLeftWR = []
+var harmful_bendLeftPM = []
+
+var harmful_bendRightDV = []
+var harmful_bendRightCF = []
+var harmful_bendRightWR = []
+var harmful_bendRightPM = []
+
+var harmful_KnittingDV = []
+var harmful_KnittingCF = []
+var harmful_KnittingWR = []
+var harmful_KnittingPM = []
+
+var userPalm = []
+var userConf = []
+var userWris = []
+var userDire = []
+
+var len = 0
+var matchThreshold = 10
+var matchCount = [0,0,0,0]
 
 // Setup Leap loop with frame callback function
 var controllerOptions = {enableGestures: true};
@@ -13,9 +41,86 @@ var controllerOptions = {enableGestures: true};
 $('document').ready(function(){
   user = JSON.parse(sessionStorage.getItem('user'))
   console.log(user)
+
   if(user){
     $("#login").hide()
     $("#signup").hide()
+
+    usersRef.orderByChild("harmful_mouse").limitToFirst(1).on("child_added", function(snapshot) {
+        var res = snapshot.val().frames
+        for(var i = 1; i<res.length; i++){
+          // hand direction
+          harmful_mouseDV.push(res[i][2][0][2])
+          // confid
+          harmful_mouseCF.push(res[i][2][0][9])
+          // wrist
+          harmful_mouseWR.push(res[i][2][0][10][3])
+          // palm
+          harmful_mousePM.push(res[i][2][0][6])
+        }
+        /*console.log(harmful_mouseDV)
+        console.log(harmful_mouseCF)
+        console.log(harmful_mouseWR)
+        console.log(harmful_mousePM)*/
+    })
+
+    usersRef.orderByChild("harmful_bendLeft").limitToFirst(1).on("child_added", function(snapshot) {
+      var res = snapshot.val().frames
+      for(var i = 1; i<res.length; i++){
+        // hand direction
+        harmful_bendLeftDV.push(res[i][2][0][2])
+        // confid
+        harmful_bendLeftCF.push(res[i][2][0][9])
+        // wrist
+        harmful_bendLeftWR.push(res[i][2][0][10][3])
+        // palm
+        harmful_bendLeftPM.push(res[i][2][0][6])
+      }
+      /*console.log("harmful_bendLeft")
+      console.log(harmful_bendLeftDV)
+      console.log(harmful_bendLeftCF)
+      console.log(harmful_bendLeftWR)
+      console.log(harmful_bendLeftPM)*/
+    })
+
+    usersRef.orderByChild("harmful_bendRight").limitToFirst(1).on("child_added", function(snapshot) {
+      var res = snapshot.val().frames
+      for(var i = 1; i<res.length; i++){
+        // hand direction
+        harmful_bendRightDV.push(res[i][2][0][2])
+        // confid
+        harmful_bendRightCF.push(res[i][2][0][9])
+        // wrist
+        harmful_bendRightWR.push(res[i][2][0][10][3])
+        // palm
+        harmful_bendRightPM.push(res[i][2][0][6])
+      }
+      /*console.log("harmful_bendRight")
+      console.log(harmful_bendRightDV)
+      console.log(harmful_bendRightCF)
+      console.log(harmful_bendRightWR)
+      console.log(harmful_bendRightPM)*/
+    })
+
+    usersRef.orderByChild("harmful_knitting").limitToFirst(1).on("child_added", function(snapshot) {
+      var res = snapshot.val().frames
+      for(var i = 1; i<res.length; i++){
+        // hand direction
+        harmful_KnittingDV.push(res[i][2][0][2])
+        // confid
+        harmful_KnittingCF.push(res[i][2][0][9])
+        // wrist
+        harmful_KnittingWR.push(res[i][2][0][10][3])
+        // palm
+        harmful_KnittingPM.push(res[i][2][0][6])
+      }
+      /*console.log("Knitting")
+      console.log(harmful_KnittingDV)
+      console.log(harmful_KnittingCF)
+      console.log(harmful_KnittingWR)
+      console.log(harmful_KnittingPM)*/
+    })
+
   }
   else{
     $("#logout").hide()
@@ -36,13 +141,8 @@ function logout(){
 function updateLeap(hand){
   currDate = new Date()
   //IF SHIT IS BAAAAAAAAAAAAD, TIMEOUT
-  if(hand.type == "right" && (!open || currDate - lastNotify  >= 30000)){
-
-    usersRef.child(user.name.replace(/ /g, '_')).update({
-        handValues: "Arham like cookies"
-    })
-
-    console.log(currDate - lastNotify)
+  console.log(currDate - lastNotify)
+  if(!open && currDate - lastNotify  >= 30000){
     if(!open){
       open = true
     }
@@ -54,15 +154,9 @@ function updateLeap(hand){
       icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
       body: "Fix yo fucking wrists!",
     });
-
-    notification.onclick = function () {
-      window.open("http://stackoverflow.com/a/13328397/1269037");
-    };
   }
   else{
-    //console.log(hand.type)
-    console.log(currDate - lastNotify)
-    console.log(open)
+    //console.log(currDate - lastNotify)
   }
 }
 
@@ -82,8 +176,30 @@ Leap.loop(controllerOptions, function(frame) {
 
       handString += "<div style='width:300px; float:left; padding:5px'>";
       handString += "Type: " + hand.type + " hand" + "<br />";
-      handString += "Confidence: " + hand.Confidence + "<br />";
-      handString += "Direction: " + vectorToString(hand.direction, 2) + "<br />";
+
+      //userPalm.push(hand.stabilizedPalmPosition)
+      userConf.push(hand.confidence)
+      //userWris.push(hand.arm.basis[2])
+      userDire.push(hand.direction)
+
+      len++
+
+      if(len === 100){
+        //check match
+        leastSquares()
+
+
+        //console.log(userPalm)
+        //console.log(userConf)
+        //console.log(userWris)
+        //console.log(userDire)
+
+        //userPalm.shift()
+        userConf.shift()
+        //userWris.shift()
+        userDire.shift()
+        len--
+      }
 
       // IDs of pointables associated with this hand
       if (hand.pointables.length > 0) {
@@ -97,6 +213,9 @@ Leap.loop(controllerOptions, function(frame) {
         }
       }
 
+      //supply some params
+      updateLeap(hand)
+
       handString += "</div>";
     }
   }
@@ -105,41 +224,81 @@ Leap.loop(controllerOptions, function(frame) {
   }
   handOutput.innerHTML = handString;
 
-  // Display Pointable (finger and tool) object data
-  var pointableOutput = document.getElementById("pointableData");
-  var pointableString = "";
-  if (frame.pointables.length > 0) {
-    var fingerTypeMap = ["Thumb", "Index finger", "Middle finger", "Ring finger", "Pinky finger"];
-    var boneTypeMap = ["Metacarpal", "Proximal phalanx", "Intermediate phalanx", "Distal phalanx"];
-    for (var i = 0; i < frame.pointables.length; i++) {
-      var pointable = frame.pointables[i];
-
-      pointableString += "<div style='width:250px; float:left; padding:5px'>";
-
-      if (pointable.tool) {
-        pointableString += "Classified as a tool <br />";
-        pointableString += "Direction: " + vectorToString(pointable.direction, 2) + "<br />";
-        pointableString += "</div>";
-      }
-      else {
-        pointableString += "Type: " + fingerTypeMap[pointable.type] + "<br />";
-        pointableString += "Classified as a finger<br />";
-        pointableString += "Direction: " + vectorToString(pointable.direction, 2) + "<br />";
-        pointableString += "</div>";
-      }
-    }
-  }
-  else {
-    pointableString += "<div>No pointables</div>";
-  }
-  //pointableOutput.innerHTML = pointableString;
-
   // Store frame for motion functions
   previousFrame = frame;
-
-  //supply some params
-  updateLeap(hand)
 })
+
+
+// MOVE EVERYTHING HERE, PUT EVERYTHING IN THE FOR LOOP. YOLO
+function leastSquares(){
+  var sum = 0
+  var match = 0
+  var match2 = 0
+  var match3 = 0
+  var match4 = 0
+  var matches = 0
+  var matches2 = 0
+  var matches3 = 0
+  var matches4 = 0
+
+  for(var i=0;i<100;i++){
+    //if(userConf[i]>0.75 && confArr[i]>0.75){
+      for(var j=0;j<3;j++){
+        match += Math.abs(userDire[i][j]  - harmful_mouseDV[i][j])
+        if(match < 30){
+          matches++
+        }
+
+        match2 += Math.abs(userDire[i][j]  - harmful_bendLeftDV[i][j])
+        if(match2 < 25){
+          matches2++
+        }
+
+        match3 += Math.abs(userDire[i][j]  - harmful_bendRightDV[i][j])
+        if(match3 < 25){
+          matches3++
+        }
+
+        match4 += Math.abs(userDire[i][j]  - harmful_KnittingDV[i][j])
+        if(match4 < 25){
+          matches4++
+        }
+      }
+    //}
+  }
+  console.log(matches + " " + matches2 + " " + matches3 + " " + matches4)
+  if(matches>90){
+    matches = 0
+    addMatchCount(0)
+    console.log("mc " + matchCount)
+  }
+  if(matches2>90){
+    matches2 = 0
+    addMatchCount(1)
+    console.log("mc2 " + matchCount)
+  }
+  if(matches3>90){
+    matches3 = 0
+    addMatchCount(2)
+    console.log("mc3 " + matchCount)
+  }
+  if(matches4>90){
+    matches4 = 0
+    addMatchCount(3)
+    console.log("mc4 " + matchCount)
+  }
+}
+
+function addMatchCount(id){
+  matchCount[id] = matchCount[id] + 1
+  if(matchCount[id] === matchThreshold){
+    matchCount[id] = 0
+    open = false
+    userDire = []
+    userConf = []
+    len = 0
+  }
+}
 
 function vectorToString(vector, digits) {
   if (typeof digits === "undefined") {

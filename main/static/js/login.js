@@ -1,4 +1,5 @@
-var usersRef = new Firebase('https://carpal-tunnel.firebaseio.com/users/')
+var usersRef = new Firebase('https://carpal-tunnel.firebaseio.com/users')
+// cycles b2b
 var user
 
 $('document').ready(function(){
@@ -30,9 +31,10 @@ function login(){
   var checkPass
   var firebaseIsShit = true
 
-  usersRef.orderByChild("email").equalTo(email).on("child_added", function(snapshot) {
+  usersRef.orderByChild("email").on("child_added", function(snapshot) {
     firebaseIsShit = false
     user = snapshot.val()
+    console.log(user)
     checkPass = user.password
     if(pass === checkPass){
         sessionStorage.setItem('user', JSON.stringify(user))
@@ -46,7 +48,7 @@ function login(){
     if(firebaseIsShit){
       alertIncorrect()
     }
-  }, 500)
+  }, 1000)
 }
 
 function alertIncorrect(){
