@@ -7,6 +7,19 @@
 <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="{{ url_for('static', filename='signup.css') }}" rel="stylesheet">
 
+<!-- Bootstrap Core CSS -->
+<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="{{ url_for('static', filename='css/agency.css') }}" rel="stylesheet">
+
+<!-- Custom Fonts -->
+<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   if (Notification.permission !== "granted")
@@ -21,30 +34,52 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 </head>
-<title>Test for Carpal Tunnel Syndrome</title>
+<body id="page-top" class="index">
+<!--
 <button id="pause" onclick="togglePause()">Pause</button>
   <h3>Hand data:</h3>
   <div id="pointableData"></div>
-  <div style="clear:both;"></div>
+  <div style="clear:both;"></div>-->
 
   <div class="container">
-        <div class="header">
-            <nav>
-              <ul class="nav nav-pills pull-right">
-                <li id="home"><a href="main">Home</a></li>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button><a class="navbar-brand page-scroll" href="#page-top" style="font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;color: black;text-transform: uppercase;">Wrist Doctor</a>
+
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li id="home"><a href="main">Home</a></li>
                 <li id="settings"><a href="settings">Settings</a></li>
                 <li id="data"><a href="data">Historical Data</a></li>
                 <li id="login"><a href="login">Login</a></li>
                 <li id="signup"><a href="showSignUp">Sign Up</a></li>
                 <li role="presentation" id="logout"><a href="#" onclick="logout()">Log out</a></li>
-              </ul>
-            </nav>
-            <h3 class="text-muted">Python Flask App</h3>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <div class="jumbotron">
         <div class="row marketing">
             <img src="{{ url_for('static', filename='img/test.jpg') }}" style="max-width:750px;float:left" />
-            poiiiii
-            <div id="counttime">1:00</div>
+            <div style="float:left;max-width:300px;padding-left:20px;">
+            <h3>Phalein's Test</h3>
+            A simple proven test thats used regularly to determine if a user has carpel tunnel syndrome.
+            Simply put your two palms together, pointing up with all your fingers in front of you for a minute.
+
+            We'll count you down when you get into position.
+            <div id="counttime" style="text-align: center;font-size: 32px;margin-top: 42px;">1:00</div>
             <div class="endTimeShow">After completing, do you feel any tingling or numbness in your hands?
                 <input type="checkbox" id="ctr"> Yes
                 <br>
@@ -54,11 +89,35 @@ document.addEventListener('DOMContentLoaded', function () {
                 You possibly have carpal tunnel syndrome, we recommend you to book an appointment with your family doctor for further checking.
             </div>
             <div id="recc">
-                Monitor blah
-            </div>
-        </div>
 
-        <footer class="footer">
-            <p>&copy; Company 2015</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <span class="copyright">Copyright 2015</span>
+                    </div>
+                </div>
+            </div>
         </footer>
+
+        <!-- jQuery -->
+        <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+        <!-- Plugin JavaScript -->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+        <script src="{{ url_for('static', filename='js/classie.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/cbpAnimatedHeader.js') }}"></script>
+
+
+        <!-- Custom Theme JavaScript -->
+        <script src="{{ url_for('static', filename='js/agency.js') }}"></script>
 </div>
+</body>

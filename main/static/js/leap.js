@@ -40,88 +40,88 @@ var controllerOptions = {enableGestures: true};
 
 $('document').ready(function(){
   user = JSON.parse(sessionStorage.getItem('user'))
-  console.log(user)
+  //console.log(user)
+
+  usersRef.child("harmful_mouse").orderByKey().limitToFirst(1).on("child_added", function(snapshot) {
+      var poiii = snapshot.val()
+      for(var i = 1; i<poiii.length; i++){
+        // hand direction
+        harmful_mouseDV.push(poiii[i][2][0][2])
+        // confid
+        harmful_mouseCF.push(poiii[i][2][0][9])
+        // wrist
+        harmful_mouseWR.push(poiii[i][2][0][10][3])
+        // palm
+        harmful_mousePM.push(poiii[i][2][0][6])
+      }
+      /*console.log(harmful_mouseDV)
+      console.log(harmful_mouseCF)
+      console.log(harmful_mouseWR)
+      console.log(harmful_mousePM)*/
+  })
+
+  usersRef.child("harmful_bendLeft").limitToFirst(1).on("child_added", function(snapshot) {
+    var poiii = snapshot.val()
+    for(var i = 1; i<poiii.length; i++){
+      // hand direction
+      harmful_bendLeftDV.push(poiii[i][2][0][2])
+      // confid
+      harmful_bendLeftCF.push(poiii[i][2][0][9])
+      // wrist
+      harmful_bendLeftWR.push(poiii[i][2][0][10][3])
+      // palm
+      harmful_bendLeftPM.push(poiii[i][2][0][6])
+    }
+    /*console.log("harmful_bendLeft")
+    console.log(harmful_bendLeftDV)
+    console.log(harmful_bendLeftCF)
+    console.log(harmful_bendLeftWR)
+    console.log(harmful_bendLeftPM)*/
+  })
+
+  usersRef.child("harmful_bendRight").limitToFirst(1).on("child_added", function(snapshot) {
+    var poiii = snapshot.val()
+    for(var i = 1; i<poiii.length; i++){
+      // hand direction
+      harmful_bendRightDV.push(poiii[i][2][0][2])
+      // confid
+      harmful_bendRightCF.push(poiii[i][2][0][9])
+      // wrist
+      harmful_bendRightWR.push(poiii[i][2][0][10][3])
+      // palm
+      harmful_bendRightPM.push(poiii[i][2][0][6])
+    }
+    /*console.log("harmful_bendRight")
+    console.log(harmful_bendRightDV)
+    console.log(harmful_bendRightCF)
+    console.log(harmful_bendRightWR)
+    console.log(harmful_bendRightPM)*/
+  })
+
+  usersRef.child("harmful_knitting").limitToFirst(1).on("child_added", function(snapshot) {
+    var poiii = snapshot.val()
+    for(var i = 1; i<poiii.length; i++){
+      // hand direction
+      harmful_KnittingDV.push(poiii[i][2][0][2])
+      // confid
+      harmful_KnittingCF.push(poiii[i][2][0][9])
+      // wrist
+      //harmful_KnittingWR.push(poiii[i][2][0][10][3])
+      // palm
+      //harmful_KnittingPM.push(poiii[i][2][0][6])
+    }
+    /*console.log("Knitting")
+    console.log(harmful_KnittingDV)
+    console.log(harmful_KnittingCF)
+    console.log(harmful_KnittingWR)
+    console.log(harmful_KnittingPM)*/
+  })
 
   if(user){
     $("#login").hide()
     $("#signup").hide()
-
-    usersRef.orderByChild("harmful_mouse").limitToFirst(1).on("child_added", function(snapshot) {
-        var res = snapshot.val().frames
-        for(var i = 1; i<res.length; i++){
-          // hand direction
-          harmful_mouseDV.push(res[i][2][0][2])
-          // confid
-          harmful_mouseCF.push(res[i][2][0][9])
-          // wrist
-          harmful_mouseWR.push(res[i][2][0][10][3])
-          // palm
-          harmful_mousePM.push(res[i][2][0][6])
-        }
-        /*console.log(harmful_mouseDV)
-        console.log(harmful_mouseCF)
-        console.log(harmful_mouseWR)
-        console.log(harmful_mousePM)*/
-    })
-
-    usersRef.orderByChild("harmful_bendLeft").limitToFirst(1).on("child_added", function(snapshot) {
-      var res = snapshot.val().frames
-      for(var i = 1; i<res.length; i++){
-        // hand direction
-        harmful_bendLeftDV.push(res[i][2][0][2])
-        // confid
-        harmful_bendLeftCF.push(res[i][2][0][9])
-        // wrist
-        harmful_bendLeftWR.push(res[i][2][0][10][3])
-        // palm
-        harmful_bendLeftPM.push(res[i][2][0][6])
-      }
-      /*console.log("harmful_bendLeft")
-      console.log(harmful_bendLeftDV)
-      console.log(harmful_bendLeftCF)
-      console.log(harmful_bendLeftWR)
-      console.log(harmful_bendLeftPM)*/
-    })
-
-    usersRef.orderByChild("harmful_bendRight").limitToFirst(1).on("child_added", function(snapshot) {
-      var res = snapshot.val().frames
-      for(var i = 1; i<res.length; i++){
-        // hand direction
-        harmful_bendRightDV.push(res[i][2][0][2])
-        // confid
-        harmful_bendRightCF.push(res[i][2][0][9])
-        // wrist
-        harmful_bendRightWR.push(res[i][2][0][10][3])
-        // palm
-        harmful_bendRightPM.push(res[i][2][0][6])
-      }
-      /*console.log("harmful_bendRight")
-      console.log(harmful_bendRightDV)
-      console.log(harmful_bendRightCF)
-      console.log(harmful_bendRightWR)
-      console.log(harmful_bendRightPM)*/
-    })
-
-    usersRef.orderByChild("harmful_knitting").limitToFirst(1).on("child_added", function(snapshot) {
-      var res = snapshot.val().frames
-      for(var i = 1; i<res.length; i++){
-        // hand direction
-        harmful_KnittingDV.push(res[i][2][0][2])
-        // confid
-        harmful_KnittingCF.push(res[i][2][0][9])
-        // wrist
-        harmful_KnittingWR.push(res[i][2][0][10][3])
-        // palm
-        harmful_KnittingPM.push(res[i][2][0][6])
-      }
-      /*console.log("Knitting")
-      console.log(harmful_KnittingDV)
-      console.log(harmful_KnittingCF)
-      console.log(harmful_KnittingWR)
-      console.log(harmful_KnittingPM)*/
-    })
-
   }
+
   else{
     $("#logout").hide()
     $("#settings").hide()
@@ -141,8 +141,8 @@ function logout(){
 function updateLeap(hand){
   currDate = new Date()
   //IF SHIT IS BAAAAAAAAAAAAD, TIMEOUT
-  console.log(currDate - lastNotify)
-  if(!open && currDate - lastNotify  >= 30000){
+  //if(!open && currDate - lastNotify  >= 30000){
+  if(!open){
     if(!open){
       open = true
     }
@@ -150,9 +150,9 @@ function updateLeap(hand){
       lastNotify = currDate
     }
 
-    var notification = new Notification('Notification title', {
+    var notification = new Notification('Be careful of your posture', {
       icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
-      body: "Fix yo fucking wrists!",
+      body: "Try not to do such repetitive motions, they strain your nerves.",
     });
   }
   else{
@@ -242,25 +242,29 @@ function leastSquares(){
   var matches4 = 0
 
   for(var i=0;i<100;i++){
+    match=0
+    match2=0
+    match3=0
+    match4=0
     //if(userConf[i]>0.75 && confArr[i]>0.75){
       for(var j=0;j<3;j++){
         match += Math.abs(userDire[i][j]  - harmful_mouseDV[i][j])
-        if(match < 30){
+        if(match < 0.2){
           matches++
         }
 
         match2 += Math.abs(userDire[i][j]  - harmful_bendLeftDV[i][j])
-        if(match2 < 25){
+        if(match2 < 0.2){
           matches2++
         }
 
         match3 += Math.abs(userDire[i][j]  - harmful_bendRightDV[i][j])
-        if(match3 < 25){
+        if(match3 < 0.2){
           matches3++
         }
 
         match4 += Math.abs(userDire[i][j]  - harmful_KnittingDV[i][j])
-        if(match4 < 25){
+        if(match4 < 0.2){
           matches4++
         }
       }
@@ -270,22 +274,22 @@ function leastSquares(){
   if(matches>90){
     matches = 0
     addMatchCount(0)
-    console.log("mc " + matchCount)
+    //console.log("mc " + matchCount)
   }
   if(matches2>90){
     matches2 = 0
     addMatchCount(1)
-    console.log("mc2 " + matchCount)
+    //console.log("mc2 " + matchCount)
   }
   if(matches3>90){
     matches3 = 0
     addMatchCount(2)
-    console.log("mc3 " + matchCount)
+    //console.log("mc3 " + matchCount)
   }
   if(matches4>90){
     matches4 = 0
     addMatchCount(3)
-    console.log("mc4 " + matchCount)
+    //console.log("mc4 " + matchCount)
   }
 }
 
