@@ -104,6 +104,17 @@ function drawLineGraphs(data) {
 				})
 				.style("fill", "none")
 				.style('stroke-width', 5)
+			.on('mouseover', function(d) {
+				d3.select(this).transition()
+					.style('stroke-width', 10)
+					.style('opacity', 1)
+			})
+			.on('mouseout', function(d) {
+				d3.select(this).transition()
+					.style('stroke-width', 5)
+					.style('opacity', 0.7)
+			}) 
+
 
 	vis.append('svg:path')
 			.attr("d", line(bendLeftLineData))
@@ -115,6 +126,16 @@ function drawLineGraphs(data) {
 				})
 				.style("fill", "none")
 				.style('stroke-width', 5)
+			.on('mouseover', function(d) {
+				d3.select(this).transition()
+					.style('stroke-width', 10)
+					.style('opacity', 1)
+			})
+			.on('mouseout', function(d) {
+				d3.select(this).transition()
+					.style('stroke-width', 5)
+					.style('opacity', 0.7)
+			}) 
 
 	vis.append('svg:path')
 			.attr("d", line(bendRightLineData))
@@ -126,6 +147,16 @@ function drawLineGraphs(data) {
 				})
 				.style("fill", "none")
 				.style('stroke-width', 5)
+			.on('mouseover', function(d) {
+				d3.select(this).transition()
+					.style('stroke-width', 10)
+					.style('opacity', 1)
+			})
+			.on('mouseout', function(d) {
+				d3.select(this).transition()
+					.style('stroke-width', 5)
+					.style('opacity', 0.7)
+			}) 
 
 	vis.append('svg:path')
 			.attr("d", line(knittingLineData))
@@ -137,36 +168,16 @@ function drawLineGraphs(data) {
 				})
 				.style("fill", "none")
 				.style('stroke-width', 5)
-	/*
-	var maxVal = getMaxValue(lineData);
-			var currentYear = new Date().getFullYear();
-			
-			//setting up y-axis scale
-			var yScale = d3.scale.linear()
-								.range([ 0, height*0.6])
-								.domain([maxVal, 0]);
-			
-			//setting up y-axis
-			var yAxis = d3.svg.axis().scale(yScale)
-									.orient('left');
-			
-			//setting up x-axis scale
-			var xScale = d3.time.scale()
-				.domain([new Date(currentYear, 0, 1), new Date(currentYear, 11, 1)]) //year, month (0-11), day
-				.range([0, width*0.5]);//0.6
-			
-			//setting up x-axis
-			var xAxis = d3.svg.axis()
-				.scale(xScale)
-				.orient("bottom")
-				.ticks(d3.time.months, 1)
-				.tickFormat(d3.time.format("%b"));
-			
-			//mapping lineData to line path
-			var line = d3.svg.line()
-						 .x (function(d) {return xScale(d.label);})
-						 .y (function(d) {return yScale(d.value);});
-	*/
+			.on('mouseover', function(d) {
+				d3.select(this).transition()
+					.style('stroke-width', 10)
+					.style('opacity', 1)
+			})
+			.on('mouseout', function(d) {
+				d3.select(this).transition()
+					.style('stroke-width', 5)
+					.style('opacity', 0.7)
+			}) 
 }
 
 function allocateNotification(arr, data, index) {
