@@ -7,8 +7,8 @@
     <script src="https://cdn.firebase.com/js/client/2.2.9/firebase.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="{{ url_for('static', filename='js/signup.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/dataVis.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script src="{{ url_for('static', filename='js/dataVis.js') }}"></script>
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='signup.css') }}" rel="stylesheet">
 
@@ -29,21 +29,13 @@
             <li role="presentation" id="logout"><a href="#" onclick="logout()">Log out</a></li>
           </ul>
         </nav>
-        <h3 class="text-muted">Python Flask App</h3>
+        <h3 class="text-muted">Carpal Tunnel Detector</h3>
       </div>
 
       <div class="jumbotron">
-        <h1>Bucket List App</h1>
-        <form class="form-signin">
-        <label for="inputName" class="sr-only">Name</label>
-        <input type="name" name="inputName" id="inputName" class="form-control" placeholder="Name" required autofocus>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
-
-        <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button" onclick="signUp()">Sign up</button>
-      </form>
+        <h1>Data Visualizations</h1>
+       
+        <svg id="visualization" width="1000" height="500"></svg>
       </div>
 
       <footer class="footer">

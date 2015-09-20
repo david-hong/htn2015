@@ -31,18 +31,33 @@
       "handValues" : "third tie",
       "name" : "John Doe",
       "notification" : [ {
-        "notification" : "arham",
-        "timestamp" : 5
+        "id" : "bendLeft",
+        "day" : 1442648209000
       }, {
-        "notification" : "poop",
-        "timestamp" : 999
+        "id" : "knitting",
+        "day" : 1442648209000
       }, {
-        "id" : "excessive repetitive motion: reason texting",
-        "timeStamp" : 1442704928190
+        "id" : "bendRight",
+        "day" : 1442723809000
+      },  {
+        "id" : "mouse",
+        "day" : 1442723809000
       }, {
-        "id" : "excessive repetitive motion: reason texting",
-        "timeStamp" : 1442705118129
-      } ],
+        "id" : "knitting",
+        "day" : 1442723809000
+      }, {
+        "id" : "bendRight",
+        "day" : 1442828209000
+      }, {
+        "id" : "bendLeft",
+        "day" : 1442828209000
+      }, {
+        "id" : "bendLeft",
+        "day" : 1442828209000
+      }, {
+        "id" : "mouse",
+        "day" : 1442828209000
+      }  ],
       "password" : "lepassword"
     }
   }
